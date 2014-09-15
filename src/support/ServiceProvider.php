@@ -23,7 +23,7 @@ class ServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        $this->package('SocialEngine/sniffer-rules');
+        $this->package('socialengine/sniffer-rules');
     }
 
     /**
