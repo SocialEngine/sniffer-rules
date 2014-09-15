@@ -1,10 +1,9 @@
-<?php namespace \SocialEngine\SnifferRules\Command;
+<?php namespace Socialengine\SnifferRules\Command;
 
 use Illuminate\Console\Command;
 
 class SniffCommand extends Command
 {
-
     /**
      * The console command name.
      *
@@ -24,22 +23,22 @@ class SniffCommand extends Command
      * @var array
      */
     public $colors = array(
-        'black'        => '0;30',
-        'dark_gray'    => '1;30',
-        'blue'         => '0;34',
-        'light_blue'   => '1;34',
-        'green'        => '0;32',
-        'light_green'  => '1;32',
-        'cyan'         => '0;36',
-        'light_cyan'   => '1;36',
-        'red'          => '0;31',
-        'light_red'    => '1;31',
-        'purple'       => '0;35',
+        'black' => '0;30',
+        'dark_gray' => '1;30',
+        'blue' => '0;34',
+        'light_blue' => '1;34',
+        'green' => '0;32',
+        'light_green' => '1;32',
+        'cyan' => '0;36',
+        'light_cyan' => '1;36',
+        'red' => '0;31',
+        'light_red' => '1;31',
+        'purple' => '0;35',
         'light_purple' => '1;35',
-        'brown'        => '0;33',
-        'yellow'       => '1;33',
-        'light_gray'   => '0;37',
-        'white'        => '1;37',
+        'brown' => '0;33',
+        'yellow' => '1;33',
+        'light_gray' => '0;37',
+        'white' => '1;37',
     );
 
     /**
@@ -79,7 +78,7 @@ class SniffCommand extends Command
      */
     public function fire()
     {
-        $this->app    = $this->getLaravel();
+        $this->app = $this->getLaravel();
         $this->config = $this->app->make('config');
 
         $output = $this->runSniffer();
@@ -96,16 +95,19 @@ class SniffCommand extends Command
     public function runSniffer()
     {
         $phpcs = $this->getPHPSnifferInstance();
-        $phpcs->checkRequirements();
-
         $standard = $this->config->get('sniffer-rules::standard', array('PSR2'));
-        $files    = $this->config->get('sniffer-rules::files', array('app/models', 'app/controllers'));
-        $ignored   = $this->config->get('sniffer-rules::ignored', '');
+        $files = $this->config->get('sniffer-rules::files', array('app/models', 'app/controllers'));
+        $ignored = $this->config->get('sniffer-rules::ignored', '');
 
+        $seStandardKey = array_search('SocialEngine', $standard);
+        if ($seStandardKey !== false) {
+            $standard[$seStandardKey] = dirname(dirname(__FILE__)) . '/Standard/SocialEngine';
+
+        }
         $options = array(
             'standard' => $standard,
-            'files'    => $files,
-            'ignored'   => $ignored,
+            'files' => $files,
+            'ignored' => $ignored,
             'extensions' => array('php'),
         );
 
@@ -133,10 +135,10 @@ class SniffCommand extends Command
     {
         if ($this->terminalHasColorSupport()) {
             foreach (explode("\n", $content) as $line) {
-                echo $this->formatLine($line)."\n";
+                echo $this->formatLine($line) . "\n";
             }
         } else {
-            echo $content."\n";
+            echo $content . "\n";
         }
     }
 
@@ -173,9 +175,9 @@ class SniffCommand extends Command
     protected function colorize($color, $string)
     {
         return
-            "\033[" . $this->colors[$color] . "m".
-            $string.
-            "\033[0m";
+          "\033[" . $this->colors[$color] . "m" .
+          $string .
+          "\033[0m";
     }
 
     /**
@@ -188,7 +190,7 @@ class SniffCommand extends Command
      */
     protected function getPHPSnifferInstance()
     {
-        include app_path().'/../vendor/squizlabs/php_codesniffer/CodeSniffer/CLI.php';
+        include app_path() . '/../vendor/squizlabs/php_codesniffer/CodeSniffer/CLI.php';
 
         return $this->getLaravel()->make("PHP_CodeSniffer_CLI");
     }

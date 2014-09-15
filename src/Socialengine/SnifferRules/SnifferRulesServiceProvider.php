@@ -1,14 +1,10 @@
-<?php namespace SocialEngine\SnifferRules\Support;
+<?php namespace Socialengine\SnifferRules;
 
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use Illuminate\Support\ServiceProvider;
+use Socialengine\SnifferRules\Command\SniffCommand;
 
-/**
- * Service provider that registers SniffCommand into Laravel application
- *
- */
-class ServiceProvider extends BaseServiceProvider
+class SnifferRulesServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -34,9 +30,19 @@ class ServiceProvider extends BaseServiceProvider
     public function register()
     {
         $this->app->bind('command.sniffer-rules', function ($app) {
-            return new \SocialEngine\SnifferRules\Command\SniffCommand;
+            return new SniffCommand;
         });
 
         $this->commands('command.sniffer-rules');
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return array();
     }
 }

@@ -8,11 +8,11 @@ return array(
     |--------------------------------------------------------------------------
     |
     | One or more coding standard do check for violations.
-    | Available options are:  PEAR, Squiz, PHPCS, MySource, PSR2 and PSR1
+    | Available options are: SocialEngine, PEAR, Squiz, PHPCS, MySource, PSR2 and PSR1
     |
     */
     'standard' => array(
-        'PSR2',
+        'SocialEngine',
     ),
 
     /*
@@ -23,11 +23,9 @@ return array(
     | One or more files and/or directories to check
     |
     */
-    'files' => array(
-        'app/models',
-        'app/controllers',
-        'app/commands',
-    ),
+    'files' => [
+        'app/',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -42,5 +40,9 @@ return array(
     | Ex: 'ignored' => array('*blade.php', 'app/database', 'app/lang'),
     |
     */
-    'ignored' => array(),
+    'ignored' => [
+        'app/lang',
+        'app/views',
+        'app/database'
+    ],
 );
