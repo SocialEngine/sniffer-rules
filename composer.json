@@ -3,8 +3,8 @@
     "description": "SocialEngine Sniffer Rules detect violations of a defined coding standard. It helps your code remains clean and consistent.",
     "authors": [
         {
-            "name": "Stepan Mazurov",
-            "email": "stepan@socialengine.com"
+            "name": "SocialEngine Development Team",
+            "email": "support@socialengine.com"
         }
     ],
     "require": {
@@ -12,9 +12,6 @@
         "illuminate/support": "~4.0",
         "illuminate/console": "~4.0",
         "squizlabs/php_codesniffer": "~1.5"
-    },
-    "require-dev": {
-        "mockery/mockery": "~0.9"
     },
     "autoload": {
         "psr-0": {

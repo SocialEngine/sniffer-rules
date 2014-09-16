@@ -35,14 +35,4 @@ class SnifferRulesServiceProvider extends ServiceProvider
 
         $this->commands('command.sniffer-rules');
     }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return array();
-    }
 }

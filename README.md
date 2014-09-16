@@ -10,6 +10,14 @@ In the `require` key of `composer.json` file add the following
 
     "socialengine/sniffer-rules": "dev-master"
 
+before the `scripts` key of `composer.json` file add the following
+    "repositories": [
+          {
+              "type": "vcs",
+              "url": "https://github.com/SocialEngine/sniffer-rules.git"
+          }
+    ],
+
 Run the Composer update comand
 
     $ composer update
