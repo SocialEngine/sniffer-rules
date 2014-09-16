@@ -11,6 +11,7 @@ In the `require` key of `composer.json` file add the following
     "socialengine/sniffer-rules": "dev-master"
 
 before the `scripts` key of `composer.json` file add the following
+    
     "repositories": [
           {
               "type": "vcs",
