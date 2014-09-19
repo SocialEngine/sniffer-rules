@@ -42,4 +42,16 @@ Edit the configuration file `app/config/packages/socialengine/sniffer-rules/conf
 
 ### Usage
 
-    php artisan sniff  
+    php artisan sniff
+
+### Coding standards
+
+* [PSR 2 Coding Style Guide](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
+* [PSR 1 Coding Standards](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md)
+* [PSR 0 Coding Standards](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md)
+
+#### Addendum and Clarifications
+
+* `namespace` should be on the same line as opening php tag: `<?php namespace SocialEngine\Amazing`
+* Property names should be camelCase
+* Test names should use underscores, not camelCase. e.g.: `test_cats_love_catnip`
