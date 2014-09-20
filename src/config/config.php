@@ -11,9 +11,9 @@ return [
     | Available options are: SocialEngine, PEAR, Squiz, PHPCS, MySource, PSR2 and PSR1
     |
     */
-    'standard' => array(
+    'standard' => [
         'SocialEngine',
-    ),
+    ],
 
     /*
     |--------------------------------------------------------------------------
