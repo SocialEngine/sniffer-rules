@@ -59,29 +59,13 @@ PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
      *
      * @return boolean
      */
-    protected function isUnderscoreName($string)
+    private function isUnderscoreName($string)
     {
-        // If there are space in the name, it can't be valid.
-        if (strpos($string, ' ') !== false) {
-            return false;
-        }
-
         $validName = true;
-        $nameBits  = explode('_', $string);
-        
         // Check that the name only contains legal characters.
         if (preg_match('/[^a-z_0-9]/', $string)) {
             $validName = false;
-        } else {
-            foreach ($nameBits as $bit) {
-
-                if ($bit !== '' && !is_numeric($bit{0}) && $bit{0} === strtoupper($bit{0})) {
-                    $validName = false;
-                    break;
-                }
-            }
         }
-
         return $validName;
 
     }
