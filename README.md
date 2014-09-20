@@ -52,6 +52,6 @@ Edit the configuration file `app/config/packages/socialengine/sniffer-rules/conf
 
 #### Addendum and Clarifications
 
-* `namespace` should be on the same line as opening php tag: `<?php namespace SocialEngine\Amazing`
+* `namespace` should be on the same line as opening php tag. e.g.: `<?php namespace SocialEngine\Amazing`
 * Property names should be camelCase
 * Test names should use underscores, not camelCase. e.g.: `test_cats_love_catnip`
