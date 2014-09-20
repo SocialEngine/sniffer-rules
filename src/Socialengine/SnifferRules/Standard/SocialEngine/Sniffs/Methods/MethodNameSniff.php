@@ -69,8 +69,8 @@ PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
         $validName = true;
         $nameBits  = explode('_', $string);
         
-        if ($string{0} === strtoupper($string{0})) {
-            // Name does not begin with a capital letter.
+        // Check that the name only contains legal characters.
+        if (preg_match('/[^a-z_0-9]/', $string)) {
             $validName = false;
         } else {
             foreach ($nameBits as $bit) {
