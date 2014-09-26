@@ -43,6 +43,21 @@ return [
     'ignored' => [
         'app/lang',
         'app/views',
-        'app/database'
+    ],
+    /*
+    |--------------------------------------------------------------------------
+    | Files to ignore Namespace for Class
+    |--------------------------------------------------------------------------
+    |
+    | Sometimes not be add Namespace for class, So you want files and
+    | folders to be skipped. The ignoredNamespace config key
+    | can be used to tell Sniffer to skip files and folders that match one
+    | or more patterns.
+    |
+    | Ex: 'ignored' => array('app/database', 'app/lang'),
+    |
+    */
+    'ignoredNamespace' => [
+        'app/database',
     ],
 ];

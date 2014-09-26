@@ -11,9 +11,7 @@ class SocialEngine_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniff
      */
     public function register()
     {
-        $this->ignoredNamespace = [
-            'app' . DIRECTORY_SEPARATOR . 'database'
-        ];
+        $this->ignoredNamespace = \Config::get('sniffer-rules::ignoredNamespace', []);
         
         return [
             T_CLASS,
