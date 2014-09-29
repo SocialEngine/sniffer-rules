@@ -49,15 +49,16 @@ return [
     | Files to ignore Namespace for Class
     |--------------------------------------------------------------------------
     |
-    | Sometimes not be add Namespace for class, So you want files and
-    | folders to be skipped. The ignoredNamespace config key
-    | can be used to tell Sniffer to skip files and folders that match one
-    | or more patterns.
+    | Some Laravel files cannot contain a namespace as the class names are hardcoded
+    | into the framework.
+    | You can modify which folders/files get ignored when running the namespace check
+    | below. The ignoreNamespace config key can be used to tell Sniffer to skip files
+    | and folders that match one or more patterns.
     |
-    | Ex: 'ignored' => array('app/database', 'app/lang'),
+    | Ex: 'ignoreNamespace' => ['app/database', 'app/lang'],
     |
     */
-    'ignoredNamespace' => [
+    'ignoreNamespace' => [
         'app/database',
     ],
 ];

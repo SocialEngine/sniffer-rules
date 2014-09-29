@@ -2,7 +2,7 @@
 
 class SocialEngine_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniffer_Sniff
 {
-    protected $ignoredNamespace = [];
+    protected $ignoreNamespace = [];
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -11,8 +11,8 @@ class SocialEngine_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniff
      */
     public function register()
     {
-        $this->ignoredNamespace = \Config::get('sniffer-rules::ignoredNamespace', []);
-        
+        $this->ignoreNamespace = \Config::get('sniffer-rules::ignoreNamespace', []);
+
         return [
             T_CLASS,
             T_INTERFACE,
@@ -41,7 +41,7 @@ class SocialEngine_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniff
         }
         
         $fileName = $phpcsFile->getFilename();
-        if (version_compare(PHP_VERSION, '5.3.0') >= 0 && !$this->shouldIgnoredNamespace($fileName)) {
+        if (!$this->shouldIgnoreMissingNamespace($fileName)) {
             $namespace = $phpcsFile->findPrevious(T_NAMESPACE, ($stackPtr - 1));
             if ($namespace === false) {
                 $error = 'Each %s must be in a namespace of at least one level (a top-level vendor name)';
@@ -50,16 +50,16 @@ class SocialEngine_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniff
         }
     }
 
-    protected function shouldIgnoredNamespace($filename)
+    protected function shouldIgnoreMissingNamespace($filename)
     {
-        $isIgnored = false;
-        foreach ($this->ignoredNamespace as $ignored) {
+        $isIgnore = false;
+        foreach ($this->ignoreNamespace as $ignored) {
             if (strpos($filename, $ignored) === 0) {
-                $isIgnored = true;
+                $isIgnore = true;
                 break;
             }
         }
 
-        return $isIgnored;
+        return $isIgnore;
     }
 }
