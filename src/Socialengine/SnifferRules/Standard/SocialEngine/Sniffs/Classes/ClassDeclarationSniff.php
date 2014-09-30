@@ -12,7 +12,6 @@ class SocialEngine_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniff
     public function register()
     {
         $this->ignoreNamespace = \Config::get('sniffer-rules::ignoreNamespace', []);
-
         return [
             T_CLASS,
             T_INTERFACE,
@@ -31,6 +30,12 @@ class SocialEngine_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniff
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
+        $this->processSingleClass($phpcsFile, $stackPtr);
+        $this->processHavingNamespace($phpcsFile, $stackPtr);
+    }
+
+    public function processSingleClass(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
         $tokens = $phpcsFile->getTokens();
         $errorData = array(strtolower($tokens[$stackPtr]['content']));
 
@@ -39,14 +44,21 @@ class SocialEngine_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniff
             $error = 'Each %s must be in a file by itself';
             $phpcsFile->addError($error, $nextClass, 'MultipleClasses', $errorData);
         }
-        
+    }
+
+    public function processHavingNamespace(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
+    {
         $fileName = $phpcsFile->getFilename();
-        if (!$this->shouldIgnoreMissingNamespace($fileName)) {
-            $namespace = $phpcsFile->findPrevious(T_NAMESPACE, ($stackPtr - 1));
-            if ($namespace === false) {
-                $error = 'Each %s must be in a namespace of at least one level (a top-level vendor name)';
-                $phpcsFile->addError($error, $stackPtr, 'MissingNamespace', $errorData);
-            }
+        if ($this->shouldIgnoreMissingNamespace($fileName)) {
+            return;
+        }
+
+        $tokens = $phpcsFile->getTokens();
+        $errorData = array(strtolower($tokens[$stackPtr]['content']));
+        $namespace = $phpcsFile->findPrevious(T_NAMESPACE, ($stackPtr - 1));
+        if ($namespace === false) {
+            $error = 'Each %s must be in a namespace of at least one level (a top-level vendor name)';
+            $phpcsFile->addError($error, $stackPtr, 'MissingNamespace', $errorData);
         }
     }
 
