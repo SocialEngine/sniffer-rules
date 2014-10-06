@@ -43,6 +43,22 @@ return [
     'ignored' => [
         'app/lang',
         'app/views',
-        'app/database'
+    ],
+    /*
+    |--------------------------------------------------------------------------
+    | Files to ignore Namespace for Class
+    |--------------------------------------------------------------------------
+    |
+    | Some Laravel files cannot contain a namespace as the class names are hardcoded
+    | into the framework.
+    | You can modify which folders/files get ignored when running the namespace check
+    | below. The ignoreNamespace config key can be used to tell Sniffer to skip files
+    | and folders that match one or more patterns.
+    |
+    | Ex: 'ignoreNamespace' => ['app/database', 'app/lang'],
+    |
+    */
+    'ignoreNamespace' => [
+        'app/database',
     ],
 ];
