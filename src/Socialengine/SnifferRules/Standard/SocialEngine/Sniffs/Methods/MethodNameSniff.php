@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 /**
  * Warehouse_Sniffs_Methods_MethodNameSniff.
  *
@@ -8,8 +9,16 @@
 class SocialEngine_Sniffs_Methods_MethodNameSniff extends
 PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
 {
-    protected $testMethodPrefix = 'test';
-    protected $testClassSuffix = 'Test';
+    protected $allowSnakeCaseMethodName = [];
+
+    /**
+     * Constructs a SocialEngine_Sniffs_Methods_MethodNameSniff.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->allowSnakeCaseMethodName = \Config::get('sniffer-rules::allowSnakeCaseMethodName', []);
+    }
 
     /**
      * Processes the tokens within the scope.
@@ -37,9 +46,8 @@ PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
 
         $testName = ltrim($methodName, '_');
         $className = $phpcsFile->getDeclarationName($currScope);
-        $testClassSuffixPos = strrpos($className, $this->testClassSuffix);
-        $isTestClass = $testClassSuffixPos === (strlen($className) - strlen($this->testClassSuffix));
-        if ($isTestClass && strpos($methodName, $this->testMethodPrefix) === 0) {
+
+        if ($this->isAllowSnakeCaseMethodName($className, $testName)) {
             if ($this->isUnderscoreName($testName) === false) {
                 $error = 'Test Method name "%s" is not in underscore format';
                 $errorData = array($className . '::' . $methodName);
@@ -51,7 +59,39 @@ PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
             $phpcsFile->addError($error, $stackPtr, 'NotCamelCaps', $errorData);
         }
     }
-    
+
+    private function isAllowSnakeCaseMethodName($className, $methodName)
+    {
+        $flage = false;
+        foreach ($this->allowSnakeCaseMethodName as $value) {
+            if (!empty($value['classSuffix'])) {
+                $classSuffix = $value['classSuffix'];
+                $classSuffixPos = strrpos($className, $classSuffix);
+                $isValidClass = $classSuffixPos === (strlen($className) - strlen($classSuffix));
+                if (!$isValidClass) {
+                    continue;
+                }
+
+                $flage = empty($value['methodPrefix']);
+            }
+
+            if (!empty($value['methodPrefix'])) {
+                foreach ($value['methodPrefix'] as $methodPrefix) {
+                    $flage = strpos($methodName, $methodPrefix) === 0;
+                    if ($flage) {
+                        break;
+                    }
+                }
+            }
+
+            if ($flage) {
+                break;
+            }
+        }
+
+        return $flage;
+    }
+
     /**
      * Returns true if the specified string is in the underscore caps format.
      *
@@ -67,6 +107,5 @@ PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
             $validName = false;
         }
         return $validName;
-
     }
 }
