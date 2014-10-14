@@ -61,4 +61,27 @@ return [
     'ignoreNamespace' => [
         'app/database',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Allow snake case for method names of classes
+    |--------------------------------------------------------------------------
+    | Below you can configure that which methods of which classes should have snake cased
+    | names. If you want to define this rule for all methods of a class with a suffixed name,
+    | then set the 'methodPrefix' array value to `*`. If you want a particular prefixed
+    | method to be snake cased in all classes, then set the 'classSuffix' value to `*`.
+    |
+    | Ex: 'allowSnakeCaseMethodName' => [
+    |    [
+    |        'classSuffix' => 'Test',
+    |        'methodPrefix' => ['test'],
+    |    ]
+    |
+    */
+    'allowSnakeCaseMethodName' => [
+        [
+            'classSuffix' => 'Test',
+            'methodPrefix' => ['test'],
+        ]
+    ]
 ];
