@@ -62,34 +62,50 @@ PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
 
     private function isAllowSnakeCaseMethodName($className, $methodName)
     {
-        $flage = false;
-        foreach ($this->allowSnakeCaseMethodName as $value) {
-            if (!empty($value['classSuffix'])) {
-                $classSuffix = $value['classSuffix'];
-                $classSuffixPos = strrpos($className, $classSuffix);
-                $isValidClass = $classSuffixPos === (strlen($className) - strlen($classSuffix));
-                if (!$isValidClass) {
-                    continue;
-                }
-
-                $flage = empty($value['methodPrefix']);
-            }
-
-            if (!empty($value['methodPrefix'])) {
-                foreach ($value['methodPrefix'] as $methodPrefix) {
-                    $flage = strpos($methodName, $methodPrefix) === 0;
-                    if ($flage) {
-                        break;
-                    }
-                }
-            }
-
-            if ($flage) {
-                break;
+        foreach ($this->allowSnakeCaseMethodName as $classMethodPair) {
+            $classOk = $this->checkClassHasValidSuffix($className, $classMethodPair['classSuffix']);
+            $methodOk = $this->checkMethodHasValidPrefix($methodName, $classMethodPair['methodPrefix']);
+            if ($classOk && $methodOk) {
+                return true;
             }
         }
+    }
 
-        return $flage;
+    /**
+     * Returns true if the specified class suffix is in the class name.
+     *
+     * @param string $className
+     * @param string $classSuffix
+     *
+     * @return boolean
+     */
+    private function checkClassHasValidSuffix($className, $classSuffix = null)
+    {
+        if ($classSuffix === '*') {
+            return true;
+        }
+        $classSuffixPos = strrpos($className, $classSuffix);
+        return $classSuffixPos === (strlen($className) - strlen($classSuffix));
+    }
+
+    /**
+     * Returns true if the specified method prefix is in the method name.
+     *
+     * @param string $methodName
+     * @param string $methodPrefix
+     *
+     * @return boolean
+     */
+    private function checkMethodHasValidPrefix($methodName, $methodPrefix = [])
+    {
+        if (in_array('*', $methodPrefix)) {
+            return true;
+        }
+        foreach ($methodPrefix as $prefix) {
+            if (strpos($methodName, $prefix) === 0) {
+                return true;
+            }
+        }
     }
 
     /**

@@ -68,8 +68,8 @@ return [
     |--------------------------------------------------------------------------
     | Below you can configure that which methods of which classes should have snake cased
     | names. If you want to define this rule for all methods of a class with a suffixed name,
-    | then leave the 'methodPrefix' array empty for it. If you want a particular prefixed
-    | method to be snake cased in all classes, then keep the 'classSuffix' for that empty.
+    | then set the 'methodPrefix' array value to `*`. If you want a particular prefixed
+    | method to be snake cased in all classes, then set the 'classSuffix' value to `*`.
     |
     | Ex: 'allowSnakeCaseMethodName' => [
     |    [
