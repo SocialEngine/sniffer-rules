@@ -69,6 +69,8 @@ PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
                 return true;
             }
         }
+        
+        return false;
     }
 
     /**
