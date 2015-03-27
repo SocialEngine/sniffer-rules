@@ -17,7 +17,11 @@ PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
     public function __construct()
     {
         parent::__construct();
-        $this->allowSnakeCaseMethodName = \Config::get('sniffer-rules::allowSnakeCaseMethodName', []);
+
+        $rawAllowSnakeCaseMethodName = PHP_CodeSniffer::getConfigData('allowSnakeCaseMethodName');
+        if (!is_null($rawAllowSnakeCaseMethodName)) {
+            $this->allowSnakeCaseMethodName = json_decode($rawAllowSnakeCaseMethodName, true);
+        }
     }
 
     /**
@@ -69,7 +73,7 @@ PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
                 return true;
             }
         }
-        
+
         return false;
     }
 

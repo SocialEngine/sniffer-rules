@@ -11,7 +11,12 @@ class SocialEngine_Sniffs_Classes_ClassNamespaceSniff implements PHP_CodeSniffer
      */
     public function register()
     {
-        $this->ignoreNamespace = \Config::get('sniffer-rules::ignoreNamespace', []);
+
+        $rawIgnoreNamespace = PHP_CodeSniffer::getConfigData('ignoreNamespace');
+        if (!is_null($rawIgnoreNamespace)) {
+            $this->ignoreNamespace = json_decode($rawIgnoreNamespace, true);
+        }
+
         return [
             T_CLASS,
             T_INTERFACE,
