@@ -19,29 +19,6 @@ class SniffCommand extends Command
     protected $description = 'Detect violations of coding standard.';
 
     /**
-     * Array of possible shell colors
-     * @var array
-     */
-    public $colors = array(
-        'black' => '0;30',
-        'dark_gray' => '1;30',
-        'blue' => '0;34',
-        'light_blue' => '1;34',
-        'green' => '0;32',
-        'light_green' => '1;32',
-        'cyan' => '0;36',
-        'light_cyan' => '1;36',
-        'red' => '0;31',
-        'light_red' => '1;31',
-        'purple' => '0;35',
-        'light_purple' => '1;35',
-        'brown' => '0;33',
-        'yellow' => '1;33',
-        'light_gray' => '0;37',
-        'white' => '1;37',
-    );
-
-    /**
      * The exit code of the command
      * @var integer
      */
@@ -61,10 +38,12 @@ class SniffCommand extends Command
      */
     public $config = null;
 
+    protected $binPath = './vendor/bin';
+
     /**
      * Create a new command instance.
      *
-     * @return void
+     * @return SniffCommand
      */
     public function __construct()
     {
@@ -81,118 +60,43 @@ class SniffCommand extends Command
         $this->app = $this->getLaravel();
         $this->config = $this->app->make('config');
 
-        $output = $this->runSniffer();
+        $options = $this->processOptions();
+        $options['extensions'] = 'php';
+        $options['colors'] = true;
 
-        $this->printOutput($output);
+        $command = $this->buildCommand($this->binPath . '/phpcs', $options);
 
-        return $this->exitCode;
-    }
+        $this->info('Running PHP Code Sniffer...');
+        $this->info($command);
 
-    /**
-     * Include, instantiate and run PHP_CodeSniffer
-     * @return string Text output
-     */
-    public function runSniffer()
-    {
-        $phpcs = $this->getPHPSnifferInstance();
-        $standard = $this->config->get('sniffer-rules::standard', array('PSR2'));
-        $files = $this->config->get('sniffer-rules::files', array('app/models', 'app/controllers'));
-        $ignored = $this->config->get('sniffer-rules::ignored', '');
+        passthru($command, $exitCode);
 
-        $seStandardKey = array_search('SocialEngine', $standard);
-        if ($seStandardKey !== false) {
-            $standard[$seStandardKey] = dirname(dirname(__FILE__)) . '/Standard/SocialEngine';
+        $this->info('Done.');
 
-        }
-        $options = array(
-            'standard' => $standard,
-            'files' => $files,
-            'ignored' => $ignored,
-            'extensions' => array('php'),
-        );
+        if ($exitCode !== 0) {
+            $answer = $this->ask('Try to automatically fix issues? [Yn]', 'y');
 
-        ob_start();
-        $numErrors = $phpcs->process($options);
-        $output = ob_get_contents();
-        ob_end_clean();
+            if (strtolower($answer) == 'n') {
+                $this->info('Declined fixes.');
 
-        if ($numErrors != 0) {
-            $this->exitCode = 1;
-        }
-
-        return $output;
-    }
-
-    /**
-     * Prints the given content to the console. It will also
-     * check if the terminal has color support in order to
-     * add color to the output.
-     *
-     * @param  string $content
-     * @return void
-     */
-    public function printOutput($content)
-    {
-        if ($this->terminalHasColorSupport()) {
-            foreach (explode("\n", $content) as $line) {
-                echo $this->formatLine($line) . "\n";
+                return $exitCode;
             }
-        } else {
-            echo $content . "\n";
+
+            // Code beautifier takes all the same options (except for colors).
+            unset($options['colors']);
+
+            $command = $this->buildCommand($this->binPath . '/phpcbf', $options);
+
+            $this->info('Running PHP Code Beautifier...');
+            $this->info($command);
+
+            passthru($command, $exitCode);
+
+            $this->info('Done.');
+
         }
-    }
 
-    /**
-     * Adds color to a line before printing in the terminal.
-     * @param  string $text Output line to be formated
-     * @return string Formated line
-     */
-    protected function formatLine($text)
-    {
-        $text = str_replace('|', $this->colorize('dark_gray', '|'), $text);
-
-        if (strstr($text, '---------')) {
-            return $this->colorize('dark_gray', $text);
-        } elseif (strstr($text, 'FILE: ')) {
-            return $this->colorize('light_green', $text);
-        } elseif (strstr($text, 'ERROR(S)')) {
-            return $this->colorize('light_red', $text);
-        } elseif (strstr($text, 'ERROR')) {
-            return str_replace('ERROR', $this->colorize('light_red', 'ERROR'), $text);
-        } elseif (strstr($text, 'WARNING')) {
-            return str_replace('WARNING', $this->colorize('yellow', 'WARNING'), $text);
-        } else {
-            return $text;
-        }
-    }
-
-    /**
-     * Returns colored output
-     * @param  string $color  Color name
-     * @param  string $string Text
-     * @return void
-     */
-    protected function colorize($color, $string)
-    {
-        return
-          "\033[" . $this->colors[$color] . "m" .
-          $string .
-          "\033[0m";
-    }
-
-    /**
-     * Include the CodeSniffer file (since there is not a better way to load it)
-     * and then instantiate the object using the IoC container.
-     *
-     * @codeCoverageIgnore
-     * @return \PHP_CodeSniffer_CLI A class to process command line phpcs scripts.
-     * @see https://github.com/squizlabs/PHP_CodeSniffer
-     */
-    protected function getPHPSnifferInstance()
-    {
-        include app_path() . '/../vendor/squizlabs/php_codesniffer/CodeSniffer/CLI.php';
-
-        return $this->getLaravel()->make("PHP_CodeSniffer_CLI");
+        return $exitCode;
     }
 
     /**
@@ -231,5 +135,70 @@ class SniffCommand extends Command
     protected function getOptions()
     {
         return array();
+    }
+
+    protected function processOptions()
+    {
+        $standards = $this->config->get('sniffer-rules.standard', array('PSR2'));
+        $files = $this->config->get('sniffer-rules.files', array('app/models', 'app/controllers'));
+        $ignore = $this->config->get('sniffer-rules.ignored', []);
+
+        $seStandardKey = array_search('SocialEngine', $standards);
+        if ($seStandardKey !== false) {
+            $standards[$seStandardKey] = dirname(dirname(__FILE__)) . '/Standard/SocialEngine';
+        }
+
+        $ignoreNamespace = $this->config->get('sniffer-rules.ignoreNamespace', []);
+        $allowSnakeCaseMethodName = $this->config->get('sniffer-rules.allowSnakeCaseMethodName', []);
+
+        return [
+            'standards' => $standards,
+            'files' => $files,
+            'ignore' => $ignore,
+            'runtime-set' => [
+                'ignoreNamespace' => $ignoreNamespace,
+                'allowSnakeCaseMethodName' => $allowSnakeCaseMethodName
+            ]
+        ];
+    }
+
+    protected function buildCommand($command, array $options)
+    {
+
+        $commandParts = [
+            $command
+        ];
+
+        // Standards requires special processing
+        foreach ($options['standards'] as $standardPath) {
+            $commandParts[] = sprintf('--standard="%s"', $standardPath);
+        }
+        unset($options['standards']);
+
+        // So does files...
+        $files = $options['files'];
+        unset($options['files']);
+
+        // And runtime-set..
+        foreach ($options['runtime-set'] as $configKey => $value) {
+            $commandParts[] = sprintf("--runtime-set '%s' '%s'", $configKey, json_encode($value));
+        }
+        unset($options['runtime-set']);
+
+
+        foreach($options as $name => $value) {
+            if ($value === true) {
+                $commandParts[] = '--' . $name;
+            } elseif (is_array($value)) {
+                $commandParts[] = sprintf('--%s="%s"', $name, implode(',', $value));
+            } else {
+                $commandParts[] = sprintf('--%s="%s"', $name, $value);
+            }
+        }
+
+        $commandParts = array_merge($commandParts, $files);
+        $command = implode(' ', $commandParts);
+
+        return $command;
     }
 }
