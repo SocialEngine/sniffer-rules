@@ -19,7 +19,6 @@ class SnifferRulesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->package('socialengine/sniffer-rules');
     }
 
     /**
@@ -34,5 +33,15 @@ class SnifferRulesServiceProvider extends ServiceProvider
         });
 
         $this->commands('command.sniffer-rules');
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return ['command.sniffer-rules.sniff'];
     }
 }
