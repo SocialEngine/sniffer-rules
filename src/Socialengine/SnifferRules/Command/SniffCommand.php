@@ -124,7 +124,7 @@ class SniffCommand extends Command
      */
     protected function getArguments()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -139,8 +139,8 @@ class SniffCommand extends Command
 
     protected function processOptions()
     {
-        $standards = $this->config->get('sniffer-rules.standard', array('PSR2'));
-        $files = $this->config->get('sniffer-rules.files', array('app/models', 'app/controllers'));
+        $standards = $this->config->get('sniffer-rules.standard', ['PSR2']);
+        $files = $this->config->get('sniffer-rules.files', ['app/models', 'app/controllers']);
         $ignore = $this->config->get('sniffer-rules.ignored', []);
 
         $seStandardKey = array_search('SocialEngine', $standards);
