@@ -74,7 +74,7 @@ class SniffCommand extends Command
 
         $this->info('Done.');
 
-        if (!$this->option('non-interactive') && $exitCode !== 0) {
+        if (!$this->option('no-interaction') && $exitCode !== 0) {
             $answer = $this->ask('Try to automatically fix issues? [Yn]', 'y');
 
             if (strtolower($answer) == 'n') {
@@ -135,9 +135,7 @@ class SniffCommand extends Command
      */
     protected function getOptions()
     {
-        return [
-            ['non-interactive', 'ni', InputOption::VALUE_NONE, null]
-        ];
+        return [];
     }
 
     protected function processOptions()
