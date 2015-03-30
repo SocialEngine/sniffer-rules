@@ -140,7 +140,7 @@ class SniffCommand extends Command
     protected function processOptions()
     {
         $standards = $this->config->get('sniffer-rules.standard', ['PSR2']);
-        $files = $this->config->get('sniffer-rules.files', ['app/models', 'app/controllers']);
+        $files = $this->config->get('sniffer-rules.files', ['app']);
         $ignore = $this->config->get('sniffer-rules.ignored', []);
 
         $seStandardKey = array_search('SocialEngine', $standards);
