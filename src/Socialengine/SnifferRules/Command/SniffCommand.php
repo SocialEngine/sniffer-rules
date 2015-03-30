@@ -1,6 +1,7 @@
 <?php namespace Socialengine\SnifferRules\Command;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputOption;
 
 class SniffCommand extends Command
 {
@@ -73,7 +74,7 @@ class SniffCommand extends Command
 
         $this->info('Done.');
 
-        if ($exitCode !== 0) {
+        if (!$this->option('non-interactive') && $exitCode !== 0) {
             $answer = $this->ask('Try to automatically fix issues? [Yn]', 'y');
 
             if (strtolower($answer) == 'n') {
@@ -134,7 +135,9 @@ class SniffCommand extends Command
      */
     protected function getOptions()
     {
-        return array();
+        return [
+            ['non-interactive', 'ni', InputOption::VALUE_NONE, null]
+        ];
     }
 
     protected function processOptions()
