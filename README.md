@@ -1,6 +1,8 @@
 # Sniffer-Rules (SoicalEngine Laravel Package)
 Detect violations of a defined coding standard. It helps your code remains clean and consistent. Available options are: **PSR2**, **PSR1**, **Zend**, **PEAR**, **Squiz**, **PHPCS** and **SocialEngine**.
 
+Note: This package only works for Laravel 5! If you're using this in a Laravel 4 project, the last compatible tag was
+[1.0.3](https://github.com/SocialEngine/sniffer-rules/tree/1.0.3)
 
 ## Quick start
 
@@ -8,7 +10,7 @@ Detect violations of a defined coding standard. It helps your code remains clean
 
 In the `require` key of `composer.json` file add the following
 
-    "socialengine/sniffer-rules": "dev-master"
+    "socialengine/sniffer-rules": "2.0.*"
 
 before the `scripts` key of `composer.json` file add the following
     
@@ -19,7 +21,7 @@ before the `scripts` key of `composer.json` file add the following
           }
     ],
 
-Run the Composer update comand
+Run the Composer update command
 
     $ composer update
 
@@ -36,13 +38,17 @@ In your `config/app.php` add `'Socialengine\SnifferRules\SnifferRulesServiceProv
 
 Publish the configuration file:
 
-    php artisan config:publish socialengine/sniffer-rules
+    `php artisan vendor:publish`
 
-Edit the configuration file `app/config/packages/socialengine/sniffer-rules/config.php` to tweak the sniffer behavior.
+Edit the configuration file `config/sniffer-rules.php` to tweak the sniffer behavior.
 
 ### Usage
 
-    php artisan sniff
+    `php artisan sniff`
+    
+To run the sniffer in a CI environment, the -n option should be set:
+
+    `php artisan sniff`
 
 ### Coding standards
 
