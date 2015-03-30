@@ -1,7 +1,6 @@
 <?php namespace Socialengine\SnifferRules\Command;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputOption;
 
 class SniffCommand extends Command
 {
