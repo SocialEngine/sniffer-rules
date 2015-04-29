@@ -44,8 +44,13 @@ PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
 
         // Ignore magic methods.
         $magicPart = strtolower(substr($methodName, 2));
-        if (in_array($magicPart, array_merge($this->magicMethods, $this->methodsDoubleUnderscore)) !== false) {
-            return;
+        if (preg_match('|^__|', $methodName) !== 0) {
+            $magicPart = strtolower(substr($methodName, 2));
+            if (isset($this->magicMethods[$magicPart]) === true
+                || isset($this->methodsDoubleUnderscore[$magicPart]) === true
+            ) {
+                return;
+            }
         }
 
         $testName = ltrim($methodName, '_');
