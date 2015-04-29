@@ -43,7 +43,6 @@ PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
         }
 
         // Ignore magic methods.
-        $magicPart = strtolower(substr($methodName, 2));
         if (preg_match('|^__|', $methodName) !== 0) {
             $magicPart = strtolower(substr($methodName, 2));
             if (isset($this->magicMethods[$magicPart]) === true
