@@ -60,11 +60,17 @@ PSR1_Sniffs_Methods_CamelCapsMethodNameSniff
                 $error = 'Test Method name "%s" is not in underscore format';
                 $errorData = array($className . '::' . $methodName);
                 $phpcsFile->addError($error, $stackPtr, 'NotUnderscore', $errorData);
+                $phpcsFile->recordMetric($stackPtr, 'SnakeCase method name', 'no');
+            } else {
+                $phpcsFile->recordMetric($stackPtr, 'SnakeCase method name', 'yes');
             }
         } elseif (PHP_CodeSniffer::isCamelCaps($testName, false, true, false) === false) {
             $error = 'Method name "%s" is not in camel caps format';
             $errorData = array($className . '::' . $methodName);
             $phpcsFile->addError($error, $stackPtr, 'NotCamelCaps', $errorData);
+            $phpcsFile->recordMetric($stackPtr, 'CamelCase method name', 'no');
+        } else {
+            $phpcsFile->recordMetric($stackPtr, 'CamelCase method name', 'yes');
         }
     }
 

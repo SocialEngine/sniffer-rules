@@ -28,6 +28,10 @@ class SocialEngine_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniff
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
+        if (isset($tokens[$stackPtr]['scope_closer']) === false) {
+            return;
+        }
+
         $errorData = array(strtolower($tokens[$stackPtr]['content']));
 
         $nextClass = $phpcsFile->findNext(array(T_CLASS, T_INTERFACE, T_TRAIT), ($stackPtr + 1));
