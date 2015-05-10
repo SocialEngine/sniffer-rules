@@ -166,7 +166,8 @@ class SniffCommand extends Command
     {
 
         $commandParts = [
-            $command
+            'php',
+            $command,
         ];
 
         // Standards requires special processing
