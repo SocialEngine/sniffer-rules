@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Socialengine\\SnifferRules\\": "src/"
+            "SocialEngine\\SnifferRules\\": "src/"
         }
     },
     "minimum-stability": "stable"

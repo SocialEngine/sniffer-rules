@@ -1,4 +1,4 @@
-<?php namespace Socialengine\SnifferRules;
+<?php namespace SocialEngine\SnifferRules;
 
 use Illuminate\Support\ServiceProvider;
 use Socialengine\SnifferRules\Command\SniffCommand;

@@ -1,4 +1,4 @@
-<?php namespace Socialengine\SnifferRules\Command;
+<?php namespace SocialEngine\SnifferRules\Command;
 
 use Illuminate\Console\Command;
 
