@@ -19,9 +19,16 @@ class SnifferRulesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__ . '/config/config.php' => config_path('sniffer-rules.php'),
-        ]);
+        $app = $this->app;
+
+        if ($app::VERSION > '5.0') {
+
+            $this->publishes([
+                __DIR__ . '/config/config.php' => config_path('sniffer-rules.php'),
+            ]);
+        } else {
+            $this->package('socialengine/sniffer-rules', null,  __DIR__);
+        }
     }
 
     /**

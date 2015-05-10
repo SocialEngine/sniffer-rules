@@ -1,54 +1,51 @@
 # Sniffer-Rules (SoicalEngine Laravel Package)
-Detect violations of a defined coding standard. It helps your code remains clean and consistent. Available options are: **PSR2**, **PSR1**, **Zend**, **PEAR**, **Squiz**, **PHPCS** and **SocialEngine**.
+Detect violations of a defined coding standard. It helps your code remain 
+clean and consistent. Available options are: **PSR2**, **PSR1**, **Zend**, 
+**PEAR**, **Squiz**, **PHPCS** and **SocialEngine**.
 
-Note: This package only works for Laravel 5! If you're using this in a Laravel 4 project, the last compatible tag was
-[1.0.3](https://github.com/SocialEngine/sniffer-rules/tree/1.0.3)
+Note: This is a hybrid package that works with both laravel 4 and 5.
 
-## Quick start
+The only limitation is that you have to create config manually
 
-### Required setup
+### Setup
 
 In the `require` key of `composer.json` file add the following
 
-    "socialengine/sniffer-rules": "2.0.*"
-
-before the `scripts` key of `composer.json` file add the following
-    
-    "repositories": [
-          {
-              "type": "vcs",
-              "url": "https://github.com/SocialEngine/sniffer-rules.git"
-          }
-    ],
+    "socialengine/sniffer-rules": "2.1.*"
 
 Run the Composer update command
 
     $ composer update
 
-In your `config/app.php` add `'Socialengine\SnifferRules\SnifferRulesServiceProvider'` to the end of the `$providers` array
+In your `config/app.php` add `'SocialEngine\SnifferRules\SnifferRulesServiceProvider'` 
+to the end of the `$providers` array
 
     'providers' => [
 
         'Illuminate\Foundation\Providers\ArtisanServiceProvider',
         'Illuminate\Auth\AuthServiceProvider',
         ...
-        'Socialengine\SnifferRules\SnifferRulesServiceProvider',
+        'SocialEngine\SnifferRules\SnifferRulesServiceProvider',
 
     ],
 
-Publish the configuration file:
+**Laravel 5**:Publish the configuration file:
 
-    `php artisan vendor:publish`
+    $ php artisan vendor:publish
 
-Edit the configuration file `config/sniffer-rules.php` to tweak the sniffer behavior.
+**Laravel 4**: Manually create `config/sniffer-rules.php` by copying 
+[config](blob/master/src/Socialengine/SnifferRules/config/config.php)
+
+Edit configuration file `config/sniffer-rules.php` to tweak the sniffer behavior.
 
 ### Usage
 
-    `php artisan sniff`
+    php artisan sniff
     
-To run the sniffer in a CI environment, the -n option should be set:
+To run the sniffer in a CI environment, the `-n` option should be set to remove
+interaction:
 
-    `php artisan sniff`
+    php artisan sniff -n
 
 ### Coding standards
 
