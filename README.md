@@ -1,54 +1,55 @@
-# Sniffer-Rules (SoicalEngine Laravel Package)
-Detect violations of a defined coding standard. It helps your code remains clean and consistent. Available options are: **PSR2**, **PSR1**, **Zend**, **PEAR**, **Squiz**, **PHPCS** and **SocialEngine**.
+# phpcs 2.0+ Laravel 4/5 Command
 
-Note: This package only works for Laravel 5! If you're using this in a Laravel 4 project, the last compatible tag was
-[1.0.3](https://github.com/SocialEngine/sniffer-rules/tree/1.0.3)
+This is a [Laravel](http://laravel.com/) 4/5 package that hooks up 
+[SquizLabs CodeSniffer 2.0](https://github.com/squizlabs/PHP_CodeSniffer) 
+into Laravel-based apps.
 
-## Quick start
+Detect violations of a defined coding standard. It helps your code remain 
+clean and consistent. Available options are: **PSR2**, **PSR1**, **Zend**, 
+**PEAR**, **Squiz**, **PHPCS** and **SocialEngine**.
 
-### Required setup
+Note: This is a hybrid package that works with both Laravel 4 and 5.
 
-In the `require` key of `composer.json` file add the following
+The only limitation for L4 is that you have to create your config manually.
 
-    "socialengine/sniffer-rules": "2.0.*"
+### Setup
 
-before the `scripts` key of `composer.json` file add the following
+Require this package in composer:
+
+```
+$ composer require socialengine/sniffer-rules
+```
+
+In your `config/app.php` add `'SocialEngine\SnifferRules\ServiceProvider'` 
+to `$providers` array:
+```php
+'providers' => [
+    'Illuminate\Foundation\Providers\ArtisanServiceProvider',
+    'Illuminate\Auth\AuthServiceProvider',
     
-    "repositories": [
-          {
-              "type": "vcs",
-              "url": "https://github.com/SocialEngine/sniffer-rules.git"
-          }
-    ],
+    'SocialEngine\SnifferRules\ServiceProvider',
 
-Run the Composer update command
+],
+```
+**Laravel 5**: Publish the configuration file:
 
-    $ composer update
+    $ php artisan vendor:publish
 
-In your `config/app.php` add `'Socialengine\SnifferRules\SnifferRulesServiceProvider'` to the end of the `$providers` array
+**Laravel 4**: Manually create `app/config/sniffer-rules.php` by copying 
+[config](src/SocialEngine/SnifferRules/config/config.php)
 
-    'providers' => [
-
-        'Illuminate\Foundation\Providers\ArtisanServiceProvider',
-        'Illuminate\Auth\AuthServiceProvider',
-        ...
-        'Socialengine\SnifferRules\SnifferRulesServiceProvider',
-
-    ],
-
-Publish the configuration file:
-
-    `php artisan vendor:publish`
-
-Edit the configuration file `config/sniffer-rules.php` to tweak the sniffer behavior.
+Edit configuration file `config/sniffer-rules.php` to tweak the sniffer behavior.
 
 ### Usage
 
-    `php artisan sniff`
+    $ php artisan sniff
     
-To run the sniffer in a CI environment, the -n option should be set:
+To run the sniffer in a CI environment, the `-n` option should be set to remove
+interaction:
 
-    `php artisan sniff`
+    $ php artisan sniff -n
+
+## SocialEngine Coding Standards
 
 ### Coding standards
 
@@ -61,3 +62,7 @@ To run the sniffer in a CI environment, the -n option should be set:
 * `namespace` should be on the same line as opening php tag. e.g.: `<?php namespace SocialEngine\Amazing`
 * Property names should be camelCase
 * Test names should use underscores, not camelCase. e.g.: `test_cats_love_catnip`
+
+## License
+
+MIT

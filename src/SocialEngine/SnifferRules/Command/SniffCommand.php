@@ -1,4 +1,4 @@
-<?php namespace Socialengine\SnifferRules\Command;
+<?php namespace SocialEngine\SnifferRules\Command;
 
 use Illuminate\Console\Command;
 
@@ -166,7 +166,8 @@ class SniffCommand extends Command
     {
 
         $commandParts = [
-            $command
+            'php',
+            $command,
         ];
 
         // Standards requires special processing

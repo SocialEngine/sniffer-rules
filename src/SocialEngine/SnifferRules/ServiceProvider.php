@@ -1,9 +1,9 @@
-<?php namespace Socialengine\SnifferRules;
+<?php namespace SocialEngine\SnifferRules;
 
-use Illuminate\Support\ServiceProvider;
-use Socialengine\SnifferRules\Command\SniffCommand;
+use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
+use SocialEngine\SnifferRules\Command\SniffCommand;
 
-class SnifferRulesServiceProvider extends ServiceProvider
+class ServiceProvider extends LaravelServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -19,9 +19,16 @@ class SnifferRulesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            __DIR__ . '/config/config.php' => config_path('sniffer-rules.php'),
-        ]);
+        $app = $this->app;
+
+        if ($app::VERSION > '5.0') {
+
+            $this->publishes([
+                __DIR__ . '/config/config.php' => config_path('sniffer-rules.php'),
+            ]);
+        } else {
+            $this->package('socialengine/sniffer-rules', null,  __DIR__);
+        }
     }
 
     /**
