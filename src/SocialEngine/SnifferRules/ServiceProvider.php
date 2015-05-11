@@ -1,9 +1,9 @@
 <?php namespace SocialEngine\SnifferRules;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 use Socialengine\SnifferRules\Command\SniffCommand;
 
-class SnifferRulesServiceProvider extends ServiceProvider
+class ServiceProvider extends LaravelServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
