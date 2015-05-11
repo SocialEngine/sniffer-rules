@@ -1,7 +1,7 @@
 <?php namespace SocialEngine\SnifferRules;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
-use Socialengine\SnifferRules\Command\SniffCommand;
+use SocialEngine\SnifferRules\Command\SniffCommand;
 
 class ServiceProvider extends LaravelServiceProvider
 {
