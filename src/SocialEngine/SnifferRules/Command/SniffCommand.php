@@ -53,7 +53,7 @@ class SniffCommand extends Command
 
         $options = $this->processOptions();
         $options['extensions'] = 'php';
-        $options['colors'] = true;
+        $options['colors'] = $this->getOutput()->isDecorated();
 
         $command = $this->buildCommand($this->binPath . '/phpcs', $options);
 
@@ -88,24 +88,6 @@ class SniffCommand extends Command
         }
 
         return $exitCode;
-    }
-
-    /**
-     * Returns true if the stream supports colorization. Colorization is
-     * disabled if not supported by the stream:
-     *  -  Windows without Ansicon and ConEmu
-     *  -  non tty consoles
-     *
-     * @codeCoverageIgnore
-     * @return boolean
-     */
-    protected function terminalHasColorSupport()
-    {
-        if (DIRECTORY_SEPARATOR == '\\') {
-            return false !== getenv('ANSICON') || 'ON' === getenv('ConEmuANSI');
-        }
-
-        return function_exists('posix_isatty');
     }
 
     /**
@@ -183,6 +165,11 @@ class SniffCommand extends Command
             $commandParts[] = sprintf("--runtime-set '%s' '%s'", $configKey, json_encode($value));
         }
         unset($options['runtime-set']);
+
+        if ($options['colors'] === false) {
+            // don't pass --colors= if its false
+            unset($options['colors']);
+        }
 
 
         foreach($options as $name => $value) {
