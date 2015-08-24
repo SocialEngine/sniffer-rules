@@ -131,7 +131,7 @@ class SniffCommand extends Command
         ];
     }
 
-    protected function processOptions()
+    private function processOptions()
     {
         $standards = $this->config->get('sniffer-rules.standard', ['PSR2']);
         $files = $this->config->get('sniffer-rules.files', ['app']);
@@ -155,12 +155,12 @@ class SniffCommand extends Command
             ]
         ];
 
-        $options = array_merge($options, array_filter($this->option()));
+        $options = array_merge($options, $this->getCliOptions());
 
         return $options;
     }
 
-    protected function buildCommand($command, array $options)
+    private function buildCommand($command, array $options)
     {
 
         $commandParts = [
@@ -199,5 +199,22 @@ class SniffCommand extends Command
         $command = implode(' ', $commandParts);
 
         return $command;
+    }
+
+    /**
+     * Generates options array from passed in cli options
+     *
+     * @return array
+     */
+    private function getCliOptions()
+    {
+        $validOptions = [];
+
+        foreach($this->getOptions() as $option) {
+            $key = $option[0];
+            $validOptions[$key] = $this->option($key);
+        }
+
+        return array_filter($validOptions);
     }
 }
