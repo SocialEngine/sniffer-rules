@@ -1,6 +1,7 @@
 <?php namespace SocialEngine\SnifferRules\Command;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputOption;
 
 class SniffCommand extends Command
 {
@@ -27,28 +28,18 @@ class SniffCommand extends Command
     /**
      * The Laravel application instance.
      *
-     * @return \Illuminate\Foundation\Application
+     * @var \Illuminate\Foundation\Application
      */
-    public $app = null;
+    public $app;
 
     /**
      * The Laravel Config component
      *
-     * @return \Illuminate\Config\Repository
+     * @var \Illuminate\Config\Repository
      */
-    public $config = null;
+    public $config;
 
     protected $binPath = './vendor/bin';
-
-    /**
-     * Create a new command instance.
-     *
-     * @return SniffCommand
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * Execute the console command.
@@ -134,7 +125,10 @@ class SniffCommand extends Command
      */
     protected function getOptions()
     {
-        return [];
+        return [
+            ['report', null, InputOption::VALUE_OPTIONAL, 'Report type, see phpmd -h for info', null],
+            ['report-file', null, InputOption::VALUE_OPTIONAL, 'File to write report to', null],
+        ];
     }
 
     protected function processOptions()
@@ -151,7 +145,7 @@ class SniffCommand extends Command
         $ignoreNamespace = $this->config->get('sniffer-rules.ignoreNamespace', []);
         $allowSnakeCaseMethodName = $this->config->get('sniffer-rules.allowSnakeCaseMethodName', []);
 
-        return [
+        $options = [
             'standards' => $standards,
             'files' => $files,
             'ignore' => $ignore,
@@ -160,6 +154,10 @@ class SniffCommand extends Command
                 'allowSnakeCaseMethodName' => $allowSnakeCaseMethodName
             ]
         ];
+
+        $options = array_merge($options, array_filter($this->option()));
+
+        return $options;
     }
 
     protected function buildCommand($command, array $options)
