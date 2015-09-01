@@ -166,7 +166,7 @@ class SniffCommand extends Command
         }
         unset($options['runtime-set']);
 
-        if ($options['colors'] === false) {
+        if (isset($options['colors']) && $options['colors'] === false) {
             // don't pass --colors= if its false
             unset($options['colors']);
         }
