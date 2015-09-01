@@ -1,16 +1,15 @@
 # phpcs 2.0+ Laravel 4/5 Command
+[![Build Status](https://travis-ci.org/SocialEngine/sniffer-rules.svg?branch=master)](https://travis-ci.org/SocialEngine/sniffer-rules)
+[![Latest Stable Version](https://poser.pugx.org/SocialEngine/sniffer-rules/version.png)](https://packagist.org/packages/SocialEngine/sniffer-rules)
+[![License](https://poser.pugx.org/SocialEngine/sniffer-rules/license.svg)](https://packagist.org/packages/SocialEngine/sniffer-rules)
 
 This is a [Laravel](http://laravel.com/) 4/5 package that hooks up 
-[SquizLabs CodeSniffer 2.0](https://github.com/squizlabs/PHP_CodeSniffer) 
-into Laravel-based apps.
+[SquizLabs CodeSniffer 2](https://github.com/squizlabs/PHP_CodeSniffer) 
+into Laravel-based apps. It can also be used manually, so read on.
 
 Detect violations of a defined coding standard. It helps your code remain 
 clean and consistent. Available options are: **PSR2**, **PSR1**, **Zend**, 
 **PEAR**, **Squiz**, **PHPCS** and **SocialEngine**.
-
-Note: This is a hybrid package that works with both Laravel 4 and 5.
-
-The only limitation for L4 is that you have to create your config manually.
 
 ### Setup
 
@@ -20,8 +19,11 @@ Require this package in composer:
 $ composer require socialengine/sniffer-rules
 ```
 
+#### Laravel 4/5
+
 In your `config/app.php` add `'SocialEngine\SnifferRules\ServiceProvider'` 
 to `$providers` array:
+
 ```php
 'providers' => [
     'Illuminate\Foundation\Providers\ArtisanServiceProvider',
@@ -31,23 +33,59 @@ to `$providers` array:
 
 ],
 ```
-**Laravel 5**: Publish the configuration file:
+#### Laravel 5: Publish the configuration file
 
-    $ php artisan vendor:publish
+```bash
+$ php artisan vendor:publish
+```
 
-**Laravel 4**: Manually create `app/config/sniffer-rules.php` by copying 
-[config](src/SocialEngine/SnifferRules/config/config.php)
+#### Laravel 4: Manually create config
+
+Copy [config](src/SocialEngine/SnifferRules/config/config.php) to 
+`app/config/sniffer-rules.php` 
 
 Edit configuration file `config/sniffer-rules.php` to tweak the sniffer behavior.
 
-### Usage
+#### Manual
 
-    $ php artisan sniff
+Install our _Standard_ by configuring **PHP_CodeSniffer** to look for it. 
+
+```bash
+$ php ./vendor/bin/phpcs --config-set installed_paths ./vendor/socialengine/src/Socialengine/SnifferRules/Standard/
+```
+
+### Usage
+#### Laravel
+```bash
+$ php artisan sniff
+```
     
 To run the sniffer in a CI environment, the `-n` option should be set to remove
 interaction:
 
-    $ php artisan sniff -n
+```
+$ php artisan sniff -n
+```
+
+#### Manual
+
+```bash
+$ php ./vendor/bin/phpcs --standard=SocialEngine path/to/code 
+```
+
+It's encouraged to add a [`Makefile`](Makefile) to your project that makes it 
+trivial for other developers. Use `Makefile` in this directory and adjust as 
+needed to fit your project requirements.
+
+### Travis
+
+In combination with the [`Makefile`](Makefile), Travis has issues finding the
+standard, we had to add a `before_script` to make it work. See 
+[Unum](https://github.com/SocialEngine/Unum) repo for example.
+
+```yml
+before_script: php ./vendor/bin/phpcs --config-set installed_paths "`pwd`/vendor/socialengine/sniffer-rules/src/SocialEngine/SnifferRules/Standard/"
+```
 
 ## SocialEngine Coding Standards
 
