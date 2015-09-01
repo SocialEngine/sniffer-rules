@@ -166,13 +166,13 @@ class SniffCommand extends Command
         }
         unset($options['runtime-set']);
 
-        if ($options['colors'] === false) {
+        if (isset($options['colors']) && $options['colors'] === false) {
             // don't pass --colors= if its false
             unset($options['colors']);
         }
 
 
-        foreach($options as $name => $value) {
+        foreach ($options as $name => $value) {
             if ($value === true) {
                 $commandParts[] = '--' . $name;
             } elseif (is_array($value)) {
@@ -197,7 +197,7 @@ class SniffCommand extends Command
     {
         $validOptions = [];
 
-        foreach($this->getOptions() as $option) {
+        foreach ($this->getOptions() as $option) {
             $key = $option[0];
             $validOptions[$key] = $this->option($key);
         }
