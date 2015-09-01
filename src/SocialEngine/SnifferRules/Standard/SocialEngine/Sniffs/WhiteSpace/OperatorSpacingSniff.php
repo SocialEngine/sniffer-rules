@@ -51,8 +51,7 @@ class SocialEngine_Sniffs_WhiteSpace_OperatorSpacingSniff implements PHP_CodeSni
                 } else {
                     if (strlen($tokens[($stackPtr - 1)]['content']) !== 1) {
                         $found = strlen($tokens[($stackPtr - 1)]['content']);
-                        $error = sprintf('Expected 1 space before "&" operator; %s found'
-                          , $found);
+                        $error = sprintf('Expected 1 space before "&" operator; %s found', $found);
 
                         $phpcsFile->addError($error, $stackPtr, 'SpacingBeforeAmp');
                     }
@@ -65,8 +64,7 @@ class SocialEngine_Sniffs_WhiteSpace_OperatorSpacingSniff implements PHP_CodeSni
                 } else {
                     if (strlen($tokens[($stackPtr + 1)]['content']) !== 1) {
                         $found = strlen($tokens[($stackPtr + 1)]['content']);
-                        $error = sprintf('Expected 1 space after "&" operator; %s found'
-                          , $found);
+                        $error = sprintf('Expected 1 space after "&" operator; %s found', $found);
 
                         $phpcsFile->addError($error, $stackPtr, 'SpacingAfterAmp');
                     }
@@ -129,13 +127,12 @@ class SocialEngine_Sniffs_WhiteSpace_OperatorSpacingSniff implements PHP_CodeSni
             if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
                 $error = "Expected 1 space before \"$operator\"; 0 found";
                 $phpcsFile->addError($error, $stackPtr, 'NoSpaceBefore');
-            } else if (strlen($tokens[($stackPtr - 1)]['content']) !== 1) {
+            } elseif (strlen($tokens[($stackPtr - 1)]['content']) !== 1) {
                 // Don't throw an error for assignments, because other standards allow
                 // multiple spaces there to align multiple assignments.
                 if (in_array($operatorCode, PHP_CodeSniffer_Tokens::$assignmentTokens) === false) {
                     $found = strlen($tokens[($stackPtr - 1)]['content']);
-                    $error = sprintf('Expected 1 space before "%s"; %s found'
-                      , $operator, $found);
+                    $error = sprintf('Expected 1 space before "%s"; %s found', $operator, $found);
 
                     $phpcsFile->addError($error, $stackPtr, 'SpacingBefore');
                 }
@@ -144,10 +141,9 @@ class SocialEngine_Sniffs_WhiteSpace_OperatorSpacingSniff implements PHP_CodeSni
             if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
                 $error = "Expected 1 space after \"$operator\"; 0 found";
                 $phpcsFile->addError($error, $stackPtr, 'NoSpaceAfter');
-            } else if (strlen($tokens[($stackPtr + 1)]['content']) !== 1) {
+            } elseif (strlen($tokens[($stackPtr + 1)]['content']) !== 1) {
                 $found = strlen($tokens[($stackPtr + 1)]['content']);
-                $error = sprintf('Expected 1 space after "%s"; %s found'
-                  , $operator, $found);
+                $error = sprintf('Expected 1 space after "%s"; %s found', $operator, $found);
 
                 $phpcsFile->addError($error, $stackPtr, 'SpacingAfter');
             }
