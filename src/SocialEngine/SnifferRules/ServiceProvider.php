@@ -21,14 +21,22 @@ class ServiceProvider extends LaravelServiceProvider
     {
         $app = $this->app;
 
-        if ($app::VERSION > '5.0') {
-            $this->publishes([
-                __DIR__ . '/config/config.php' => config_path('sniffer-rules.php'),
-            ]);
+        $source = realpath(__DIR__ . '/config/config.php');
+
+        if (class_exists('Illuminate\Foundation\Application', false) && $app->runningInConsole()) {
+            // L5
+            $this->publishes([$source => config_path('sniffer-rules.php')]);
+            $this->mergeConfigFrom($source, 'sniffer-rules');
+        } elseif (class_exists('Laravel\Lumen\Application', false)) {
+            // Lumen
+            $app->configure('sniffer-rules');
+            $this->mergeConfigFrom($source, 'sniffer-rules');
         } else {
+            // L4
             $this->package('socialengine/sniffer-rules', null, __DIR__);
         }
     }
+
 
     /**
      * Register the service provider.
