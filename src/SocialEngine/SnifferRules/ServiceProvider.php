@@ -21,9 +21,13 @@ class ServiceProvider extends LaravelServiceProvider
     {
         $app = $this->app;
 
+        if (!$app->runningInConsole()) {
+            return;
+        }
+
         $source = realpath(__DIR__ . '/config/config.php');
 
-        if (class_exists('Illuminate\Foundation\Application', false) && $app->runningInConsole()) {
+        if (class_exists('Illuminate\Foundation\Application', false)) {
             // L5
             $this->publishes([$source => config_path('sniffer-rules.php')]);
             $this->mergeConfigFrom($source, 'sniffer-rules');
