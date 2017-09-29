@@ -1,9 +1,9 @@
-# phpcs 2.0+ Laravel 4/5 Command
+# phpcs 2.0+ Laravel 5, Lumen 5 Command
 [![Build Status](https://travis-ci.org/SocialEngine/sniffer-rules.svg?branch=master)](https://travis-ci.org/SocialEngine/sniffer-rules)
 [![Latest Stable Version](https://poser.pugx.org/SocialEngine/sniffer-rules/version.png)](https://packagist.org/packages/SocialEngine/sniffer-rules)
 [![License](https://poser.pugx.org/SocialEngine/sniffer-rules/license.svg)](https://packagist.org/packages/SocialEngine/sniffer-rules)
 
-This is a [Laravel](http://laravel.com/) 4/5 package that hooks up 
+This is a [Laravel](http://laravel.com/) 5 package that hooks up 
 [SquizLabs CodeSniffer 2](https://github.com/squizlabs/PHP_CodeSniffer) 
 into Laravel-based apps. It can also be used manually, so read on.
 
@@ -19,7 +19,7 @@ Require this package in composer:
 $ composer require socialengine/sniffer-rules
 ```
 
-#### Laravel 4/5
+#### Laravel 5
 
 In your `config/app.php` add `'SocialEngine\SnifferRules\ServiceProvider'` 
 to `$providers` array:
@@ -38,13 +38,6 @@ to `$providers` array:
 ```bash
 $ php artisan vendor:publish
 ```
-
-#### Laravel 4: Manually create config
-
-Copy [config](src/SocialEngine/SnifferRules/config/config.php) to 
-`app/config/sniffer-rules.php` 
-
-Edit configuration file `config/sniffer-rules.php` to tweak the sniffer behavior.
 
 #### Manual
 
