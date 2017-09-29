@@ -84,10 +84,19 @@ class SniffCommand extends Command
             passthru($command, $exitCode);
 
             $this->info('Done.');
-
         }
 
         return $exitCode;
+    }
+
+    /**
+     * Forward compatibility with Laravel/Lumen 5.5
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        return $this->fire();
     }
 
     /**
