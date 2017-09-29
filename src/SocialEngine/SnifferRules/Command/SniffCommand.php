@@ -91,6 +91,16 @@ class SniffCommand extends Command
     }
 
     /**
+     * Forward compatibility with Laravel/Lumen 5.5
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        return $this->fire();
+    }
+
+    /**
      * Get the console command arguments.
      *
      * @return array

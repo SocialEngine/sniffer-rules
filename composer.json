@@ -1,7 +1,7 @@
 {
     "name": "socialengine/sniffer-rules",
-    "description": "A Laravel 4 and Laravel 5 SquizLabs Code Sniffer 2.0 artisan command. Detect violations of a defined coding standard. It helps your code remains clean and consistent.",
-    "keywords": ["laravel", "laravel 4", "laravel 5", "lumen", "code sniffer", "squizlabs", "phpcs", "artisan", "cli"],
+    "description": "A Lumen 5 and Laravel 5 SquizLabs Code Sniffer 2.0 artisan command. Detect violations of a defined coding standard. It helps your code remains clean and consistent.",
+    "keywords": ["laravel", "laravel 5", "lumen", "lumen 5", "code sniffer", "squizlabs", "phpcs", "artisan", "cli"],
     "homepage": "https://github.com/socialengine/sniffer-rules",
     "license": "MIT",
     "authors": [
