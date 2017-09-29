@@ -84,7 +84,6 @@ class SniffCommand extends Command
             passthru($command, $exitCode);
 
             $this->info('Done.');
-
         }
 
         return $exitCode;
